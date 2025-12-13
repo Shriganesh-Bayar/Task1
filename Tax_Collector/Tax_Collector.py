@@ -6,6 +6,7 @@ class Employee:
     bonus_percentage: float
     gross_monthly_salary: float
     annual_gross_salary: float
+    taxable_annual_income: float
 
     def __init__(self, name, EmpID, basic_salary, special_allowance, bonus_percentage):
         self.name = name
@@ -16,13 +17,22 @@ class Employee:
 
         # calculating the gross monthly and annual salry
         self.gross_monthly_salary = self.basic_salary + self.special_allowance
-        self.annual_gross_salary = self.gross_monthly_salary * 12 * (100 + bonus_percentage) /100
+        self.annual_gross_salary = self.gross_monthly_salary * 12 * (100 + bonus_percentage) / 100
     
     def Report(self):
+        print("\nReport:")
         print("Name:", self.name)
         print("EmpID:", self.EmpID)
-        print("Gross Monthly Salary:", self.gross_monthly_salary)
-        print("Gross annual salary:", self.annual_gross_salary)
+        print(f"Gross Monthly Salary: ₹{self.gross_monthly_salary}")
+        print(f"Annual gross salary: ₹{self.annual_gross_salary}")
+
+    def Taxable_Income(self):
+        print("\nTaxable Income Report:")
+        self.taxable_annual_income = self.annual_gross_salary - 50000
+        print(f"Annual gross salary: ₹{self.annual_gross_salary}")
+        print("Taxable Income: ₹50000")
+        print(f"The Taxable annual income: ₹{self.taxable_annual_income}")
+        
         
 if __name__ == "__main__":
     n = int(input("Enter number of employee: "))
@@ -36,4 +46,4 @@ if __name__ == "__main__":
         employee[i] = Employee(name, EmpId, basic_salary, special_allowance, bonus_percentage)
     for i in range(n):
         employee[i].Report()
-    pass
+        employee[i].Taxable_Income()
