@@ -29,9 +29,9 @@ def Enter_array(size: int, message: str) -> list[int]:
 if __name__ == "__main__":
     n = Enter_Input("Enter the number of rows: ")
     m = Enter_Input("Enter the number of colums: ")
-    arr = []
+    matrix = []
     for i in range(n):
-        arr.append(Enter_array(m, f"Enter row {i + 1}: "))
+        matrix.append(Enter_array(m, f"Enter row {i + 1}: "))
     print("The 2D array is: ")
-    for row in arr:
+    for row in matrix:
         print(row)
