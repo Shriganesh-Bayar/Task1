@@ -8,6 +8,7 @@ class Employee:
     annual_gross_salary: float
     taxable_annual_income: float
     total_tax: float
+    net_salary: float
 
     def __init__(self, name, EmpID, basic_salary, special_allowance, bonus_percentage):
         self.name = name
@@ -68,13 +69,19 @@ class Employee:
         if self.taxable_annual_income >= 1500000:
             slab_tax = min(self.taxable_annual_income - 300000, 300000) * 0.3
             tax += slab_tax
-            print("Above ₹300000 ->", slab_tax)
+            print("Above ₹1500000 ->", slab_tax)
 
         education_health = tax * 0.04
         self.total_tax = tax + education_health
         print("Tax:", tax)
         print("Tax on education and health: ", education_health)
-        print("Total tax:", self.total_tax)        
+        print("Total tax:", self.total_tax)   
+
+    def net_salary(self):
+        self.net_salary = self.annual_gross_salary - self.total_tax
+        print(f"Gross annual salary: ₹{self.annual_gross_salary}")
+        print(f"Total tax: ₹{self.total_tax}")
+        print(f"Net annual salary: ₹{self.net_salary}")
         
 if __name__ == "__main__":
     n = int(input("Enter number of employee: "))
