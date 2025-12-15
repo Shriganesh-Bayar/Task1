@@ -25,18 +25,51 @@ class Item:
     @staticmethod
     def invoice(items):
         grand_total = 0
+        total_quantity = 0
 
         print("\nInvoice")
-        print("----------------------------------------------------")
+        print("-" * 65)
         print(f"{'Code':10} {'Description':15} {'Qty':8} {'Price':10} {'Total':10}")
-        print("----------------------------------------------------")
+        print("-" * 65)
 
         for item in items:
-            print(f"{item.code:10} {item.description:10} {item.quantity:8} ₹{item.price:8.2f} ₹{item.total_cost():10.2f}")
-            grand_total += item.total_cost()
+            item_total = item.total_cost()
+            grand_total += item_total
+            total_quantity += item.quantity
 
-        print("----------------------------------------------------")
-        print(f"Grand Total: ₹{grand_total:.2f}")
+            print(
+                f"{item.code:10} "
+                f"{item.description:15} "
+                f"{item.quantity:8} "
+                f"{item.price:10.2f} "
+                f"{item_total:10.2f}"
+            )
+
+        print("-" * 65)
+        print(f"{'Sub Total':48} {grand_total:10.2f}")
+
+        # --------- Discounts ---------
+        discount = 0
+
+        # 1️⃣ Amount Discount
+        if grand_total > 10000:
+            amount_discount = grand_total * 0.10
+            discount += amount_discount
+            print(f"{'10% Amount Discount':48} -{amount_discount:9.2f}")
+
+        # 2️⃣ Quantity Discount (after amount discount)
+        discounted_total = grand_total - discount
+
+        if total_quantity > 20:
+            quantity_discount = discounted_total * 0.05
+            discount += quantity_discount
+            print(f"{'5% Quantity Discount':48} -{quantity_discount:9.2f}")
+
+        final_total = grand_total - discount
+
+        print("-" * 65)
+        print(f"{'Final Total After Discounts':48} {final_total:10.2f}")
+
 
 if __name__ == "__main__":
     items = []
