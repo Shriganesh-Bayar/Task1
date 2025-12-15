@@ -69,8 +69,21 @@ class Item:
 
         final_total = grand_total - discount
 
+        if final_total < 5000:
+            tax_rate = 0.05
+        elif final_total <= 20000:
+            tax_rate = 0.10
+        else:
+            tax_rate = 0.15
+
+        tax = final_total * tax_rate
+
+        print(f"{'Tax Applied':48} {tax:10.2f}")
+
+        final_payable = final_total + tax
+
         print("-" * 65)
-        print(f"{'Final Payable Amount':48} {final_total:10.2f}")
+        print(f"{'Final Payable Amount':48} {final_payable:10.2f}")
 
 
 if __name__ == "__main__":
