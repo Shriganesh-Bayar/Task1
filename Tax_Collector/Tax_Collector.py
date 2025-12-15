@@ -30,7 +30,7 @@ class Employee:
         print("EmpID:", self.EmpID)
         print(f"Gross Monthly Salary: ₹{self.gross_monthly_salary}")
         print(f"Annual gross salary: ₹{self.annual_gross_salary}")
-        print(f"Taxable Income: ₹{self.Taxable_Income}")
+        print(f"Taxable Income: ₹{self.taxable_annual_income}")
         print(f"Total tax: ₹{self.total_tax}")
         print(f"Annual net salary: ₹{self.net_salary}")
 
@@ -43,6 +43,7 @@ class Employee:
 
     def calculate_tax(self):
         tax = 0
+        print("\nTax break-down")
         if self.taxable_annual_income <= 700000:
             print("Taxable income is not more than 7lakh, hence no tax")
             pass
@@ -84,23 +85,107 @@ class Employee:
         print("Total tax:", self.total_tax)   
 
     def net_salary(self):
+        print("\nNetsalary calculation: ")
         self.net_salary = self.annual_gross_salary - self.total_tax
         print(f"Gross annual salary: ₹{self.annual_gross_salary}")
         print(f"Total tax: ₹{self.total_tax}")
         print(f"Net annual salary: ₹{self.net_salary}")
+
+class Negative_Number(Exception):
+    '''Raised when the entered number is negative '''
+    pass
+
+class Salary_Limit(Exception):
+    '''Raise when the salary is not in the limit of a employee's salary'''
+    pass
+
+class Allowance_Limit(Exception):
+    '''Raise when the special allowance is not in the limit of a employee's salary'''
+    pass
+
+def Enter_Input(message: str) -> int:
+    while True:
+        try:
+            number = int(input(message))
+            if number <= 0 :
+                raise Negative_Number("Number should be Postive integer!")
+            return number
+        except Negative_Number:
+            print(Negative_Number)
+        except ValueError:
+            print("Number should be Postive integer!")
+
+def Enter_name():
+    while True:
+        name = input("Enter employee's name: ").strip()
+        if len(name) > 50:
+            print("Atmost 50 characters")
+        elif not name.replace(" ", "").isalpha():
+            print("Alphabets only allowed to be a name")
+        else: 
+            return name
         
+def Enter_EmpID():
+    while True:
+        EmpID = input("Enter employee's ID: ").strip()
+        if 5 < len(EmpID) > 10: 
+            print("EmpID should have only 5 - 10 character")
+        elif not EmpID.isalnum():
+            print("Alphanumeric characters only")
+        else:
+            return EmpID
+        
+def Enter_basic_salary():
+    while True:
+        try: 
+            basic_salary = float(input("Enter the employee's basic salary: "))
+            if basic_salary <= 0 or basic_salary :
+                raise Salary_Limit("The salary should be in between [1, 10000000]")
+            return basic_salary
+        except Salary_Limit:
+            print(Salary_Limit)
+        except ValueError:
+            print("Only positive numbers allowed")
+
+def Enter_bonus():
+    while True:
+        try:
+            bonus_percentage = input("Enter the Employee's bonus: ")
+            if bonus_percentage < 0 or bonus_percentage > 100:
+                raise ValueError
+        except ValueError:
+            print("Only Numbers between 0 - 100")
+
+def Enter_special_allowance():
+    while True:
+        try:
+            special_allowance = float(input("Enter the employee's special allowance: "))
+            if special_allowance < 0 or special_allowance > 10000000:
+                raise Allowance_Limit("The salary should be in between [1, 10000000]")
+            return special_allowance
+        except Allowance_Limit:
+            print(Allowance_Limit)
+        except ValueError:
+            print("Only non-negative numbers allowed")
+         
 if __name__ == "__main__":
-    n = int(input("Enter number of employee: "))
+    n = Enter_Input("Enter number of employee: ")
     id = {}
     employee = [None] * n
     for i in range(n):
-        name = input("Enter the name of employee: ")
-        EmpId = input("Enter the employee ID: ")
-        basic_salary = float(input(f"Enter the basic salary of {name}: "))
-        special_allowance = float(input(f"Enter the special allowance of {name}: "))
-        bonus_percentage = float(input(f"Enter the bonus percentage(%): "))
+        name = Enter_name()
+        EmpId = Enter_EmpID()
+        basic_salary = Enter_basic_salary()
+        special_allowance = Enter_special_allowance()
+        bonus_percentage = Enter_bonus()
         employee[i] = Employee(name, EmpId, basic_salary, special_allowance, bonus_percentage)
         id[EmpId] = i
 
-    for i in range(n):
-        employee[i].Report()
+    print() # new line
+
+    while True:
+        person_id = input("Enter the employee's id: ")
+        if person_id not in id:
+            print(f"{person_id} is not present in the employee list")
+        else:
+            employee[id[person_id]].Report()
