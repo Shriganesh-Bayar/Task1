@@ -23,7 +23,7 @@ class Item:
         print("Total Cost: ₹", self.total_cost())
 
     @staticmethod
-    def invoice(items):
+    def invoice(items, membership):
         grand_total = 0
         total_quantity = 0
 
@@ -48,27 +48,29 @@ class Item:
         print("-" * 65)
         print(f"{'Sub Total':48} {grand_total:10.2f}")
 
-        # --------- Discounts ---------
         discount = 0
 
-        # 1️⃣ Amount Discount
         if grand_total > 10000:
             amount_discount = grand_total * 0.10
             discount += amount_discount
             print(f"{'10% Amount Discount':48} -{amount_discount:9.2f}")
 
-        # 2️⃣ Quantity Discount (after amount discount)
         discounted_total = grand_total - discount
-
         if total_quantity > 20:
             quantity_discount = discounted_total * 0.05
             discount += quantity_discount
             print(f"{'5% Quantity Discount':48} -{quantity_discount:9.2f}")
 
+        discounted_total = grand_total - discount
+        if membership:
+            member_discount = discounted_total * 0.02
+            discount += member_discount
+            print(f"{'2% Membership Discount':48} -{member_discount:9.2f}")
+
         final_total = grand_total - discount
 
         print("-" * 65)
-        print(f"{'Final Total After Discounts':48} {final_total:10.2f}")
+        print(f"{'Final Payable Amount':48} {final_total:10.2f}")
 
 
 if __name__ == "__main__":
@@ -86,4 +88,5 @@ if __name__ == "__main__":
         items.append(Item(code, description, quantity, price))
         code_to_index["code"] = i
 
-    Item.invoice(items)    
+    membership = input("Membership (y/n): ").lower() == 'y'
+    Item.invoice(items, membership)    
