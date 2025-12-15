@@ -1,3 +1,5 @@
+PROMO_CODE = {"PROMOCODE10", "PROMOCODE11", "PROMOCODE12", "PROMOCODE13", "PROMOCODE14", "PROMOCODE15"}
+
 class Item:
     code: str
     description: str
@@ -24,6 +26,8 @@ class Item:
 
     @staticmethod
     def invoice(items, membership):
+        PROMO_DISCOUNT = 0.10
+
         grand_total = 0
         total_quantity = 0
 
@@ -34,6 +38,12 @@ class Item:
 
         for item in items:
             item_total = item.total_cost()
+            promo_discount = 0
+
+            if item.code in PROMO_CODE:
+                promo_discount = item_total * PROMO_DISCOUNT
+                item_total -= promo_discount
+
             grand_total += item_total
             total_quantity += item.quantity
 
@@ -43,11 +53,13 @@ class Item:
                 f"{item.quantity:8} "
                 f"{item.price:10.2f} "
                 f"{item_total:10.2f}"
+                f"{'(promo discount)' if promo_discount > 0 else ''}"
             )
 
         print("-" * 65)
-        print(f"{'Sub Total':48} {grand_total:10.2f}")
+        print(f"{'Sub Total (After Promo)':48} {grand_total:10.2f}")
 
+        # ---- Discounts ----
         discount = 0
 
         if grand_total > 10000:
@@ -69,6 +81,7 @@ class Item:
 
         final_total = grand_total - discount
 
+        # ---- Tax ----
         if final_total < 5000:
             tax_rate = 0.05
         elif final_total <= 20000:
@@ -77,13 +90,13 @@ class Item:
             tax_rate = 0.15
 
         tax = final_total * tax_rate
-
         print(f"{'Tax Applied':48} {tax:10.2f}")
 
         final_payable = final_total + tax
 
         print("-" * 65)
         print(f"{'Final Payable Amount':48} {final_payable:10.2f}")
+
 
 
 if __name__ == "__main__":
