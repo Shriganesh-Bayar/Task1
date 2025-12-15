@@ -25,7 +25,7 @@ class Item:
         print("Total Cost: ₹", self.total_cost())
 
     @staticmethod
-    def invoice(items, membership):
+    def invoice(items, membership, payment_method):
         PROMO_DISCOUNT = 0.10
 
         grand_total = 0
@@ -59,7 +59,6 @@ class Item:
         print("-" * 65)
         print(f"{'Sub Total (After Promo)':48} {grand_total:10.2f}")
 
-        # ---- Discounts ----
         discount = 0
 
         if grand_total > 10000:
@@ -81,7 +80,6 @@ class Item:
 
         final_total = grand_total - discount
 
-        # ---- Tax ----
         if final_total < 5000:
             tax_rate = 0.05
         elif final_total <= 20000:
@@ -97,7 +95,18 @@ class Item:
         print("-" * 65)
         print(f"{'Final Payable Amount':48} {final_payable:10.2f}")
 
+        surcharge = 0
 
+        if payment_method == "card":
+            surcharge = final_payable * 0.02
+            print(f"{'Credit Card Surcharge (2%)':48} +{surcharge:9.2f}")
+
+        print(f"{'Payment Method':48} {payment_method.capitalize():>10}")
+
+        final_payable += surcharge
+
+        print("-" * 65)
+        print(f"{'Final Payable Amount':48} {final_payable:10.2f}")
 
 if __name__ == "__main__":
     items = []
@@ -115,4 +124,5 @@ if __name__ == "__main__":
         code_to_index["code"] = i
 
     membership = input("Membership (y/n): ").lower() == 'y'
-    Item.invoice(items, membership)    
+    payment_method = input("Payment Method (cash/card): ").strip().lower()
+    Item.invoice(items, membership, payment_method)    
