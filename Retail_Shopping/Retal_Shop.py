@@ -31,7 +31,6 @@ class Item:
         grand_total = 0
         total_quantity = 0
 
-        # Calculate totals first without printing
         for item in items:
             item_total = item.total_cost()
             promo_discount = 0
@@ -43,7 +42,6 @@ class Item:
             grand_total += item_total
             total_quantity += item.quantity
 
-        # Calculate all discounts
         discount = 0
         
         if grand_total > 10000:
@@ -62,7 +60,6 @@ class Item:
 
         final_total = grand_total - discount
 
-        # Calculate tax
         if final_total < 5000:
             tax_rate = 0.05
         elif final_total <= 20000:
@@ -73,22 +70,17 @@ class Item:
         tax = final_total * tax_rate
         final_payable = final_total + tax
 
-        # Calculate surcharge
         surcharge = 0
         if payment_method == "card":
             surcharge = final_payable * 0.02
 
         final_payable += surcharge
         
-        # Calculate loyalty points (for every ₹100 spent)
-        loyalty_points = int(grand_total // 100)  # Integer division for whole points
 
-        # Only print if final_payable >= 500
         if final_payable < 500: 
             print(f"{'Final Payable Amount':48} {final_payable:10.2f}")
             return
 
-        # Print the invoice
         print("\nInvoice")
         print("-" * 65)
         print(f"{'Code':10} {'Description':15} {'Qty':8} {'Price':10} {'Total':10}")
@@ -114,7 +106,6 @@ class Item:
         print("-" * 65)
         print(f"{'Sub Total (After Promo)':48} {grand_total:10.2f}")
 
-        # Reset discount for printing
         discount = 0
         
         if grand_total > 10000:
@@ -144,7 +135,6 @@ class Item:
 
         print(f"{'Payment Method':48} {payment_method.capitalize():>10}")
         
-        # Display loyalty points
         print(f"{'Loyalty Points Earned':48} {loyalty_points:10}")
 
         print("-" * 65)
