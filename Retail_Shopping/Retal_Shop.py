@@ -135,6 +135,7 @@ class Item:
 
         print(f"{'Payment Method':48} {payment_method.capitalize():>10}")
         
+        loyalty_points = final_payable // 100
         print(f"{'Loyalty Points Earned':48} {loyalty_points:10}")
 
         print("-" * 65)
