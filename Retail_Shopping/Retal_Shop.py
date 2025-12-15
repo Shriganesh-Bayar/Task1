@@ -31,6 +31,61 @@ class Item:
         grand_total = 0
         total_quantity = 0
 
+        # Calculate totals first without printing
+        for item in items:
+            item_total = item.total_cost()
+            promo_discount = 0
+
+            if item.code in PROMO_CODE:
+                promo_discount = item_total * PROMO_DISCOUNT
+                item_total -= promo_discount
+
+            grand_total += item_total
+            total_quantity += item.quantity
+
+        # Calculate all discounts
+        discount = 0
+        
+        if grand_total > 10000:
+            amount_discount = grand_total * 0.10
+            discount += amount_discount
+
+        discounted_total = grand_total - discount
+        if total_quantity > 20:
+            quantity_discount = discounted_total * 0.05
+            discount += quantity_discount
+
+        discounted_total = grand_total - discount
+        if membership:
+            member_discount = discounted_total * 0.02
+            discount += member_discount
+
+        final_total = grand_total - discount
+
+        # Calculate tax
+        if final_total < 5000:
+            tax_rate = 0.05
+        elif final_total <= 20000:
+            tax_rate = 0.10
+        else:
+            tax_rate = 0.15
+
+        tax = final_total * tax_rate
+        final_payable = final_total + tax
+
+        # Calculate surcharge
+        surcharge = 0
+        if payment_method == "card":
+            surcharge = final_payable * 0.02
+
+        final_payable += surcharge
+
+        # Only print if final_payable >= 500
+        if final_payable < 500: 
+            print(f"{'Final Payable Amount':48} {final_payable:10.2f}")
+            return
+
+        # Print the invoice
         print("\nInvoice")
         print("-" * 65)
         print(f"{'Code':10} {'Description':15} {'Qty':8} {'Price':10} {'Total':10}")
@@ -44,9 +99,6 @@ class Item:
                 promo_discount = item_total * PROMO_DISCOUNT
                 item_total -= promo_discount
 
-            grand_total += item_total
-            total_quantity += item.quantity
-
             print(
                 f"{item.code:10} "
                 f"{item.description:15} "
@@ -57,10 +109,11 @@ class Item:
             )
 
         print("-" * 65)
-        print(f"{'Sub Total (After Promo)':48} {grand_total:10.2f}")
+        print(f"{'Sub Total (After Promo):'} {grand_total:.2f}")
 
+        # Reset discount for printing
         discount = 0
-
+        
         if grand_total > 10000:
             amount_discount = grand_total * 0.10
             discount += amount_discount
@@ -78,32 +131,15 @@ class Item:
             discount += member_discount
             print(f"{'2% Membership Discount':48} -{member_discount:9.2f}")
 
-        final_total = grand_total - discount
-
-        if final_total < 5000:
-            tax_rate = 0.05
-        elif final_total <= 20000:
-            tax_rate = 0.10
-        else:
-            tax_rate = 0.15
-
-        tax = final_total * tax_rate
         print(f"{'Tax Applied':48} {tax:10.2f}")
-
-        final_payable = final_total + tax
 
         print("-" * 65)
         print(f"{'Final Payable Amount':48} {final_payable:10.2f}")
 
-        surcharge = 0
-
         if payment_method == "card":
-            surcharge = final_payable * 0.02
             print(f"{'Credit Card Surcharge (2%)':48} +{surcharge:9.2f}")
 
         print(f"{'Payment Method':48} {payment_method.capitalize():>10}")
-
-        final_payable += surcharge
 
         print("-" * 65)
         print(f"{'Final Payable Amount':48} {final_payable:10.2f}")
