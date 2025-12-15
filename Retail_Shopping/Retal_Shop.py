@@ -79,6 +79,9 @@ class Item:
             surcharge = final_payable * 0.02
 
         final_payable += surcharge
+        
+        # Calculate loyalty points (for every ₹100 spent)
+        loyalty_points = int(grand_total // 100)  # Integer division for whole points
 
         # Only print if final_payable >= 500
         if final_payable < 500: 
@@ -109,7 +112,7 @@ class Item:
             )
 
         print("-" * 65)
-        print(f"{'Sub Total (After Promo):'} {grand_total:.2f}")
+        print(f"{'Sub Total (After Promo)':48} {grand_total:10.2f}")
 
         # Reset discount for printing
         discount = 0
@@ -140,6 +143,9 @@ class Item:
             print(f"{'Credit Card Surcharge (2%)':48} +{surcharge:9.2f}")
 
         print(f"{'Payment Method':48} {payment_method.capitalize():>10}")
+        
+        # Display loyalty points
+        print(f"{'Loyalty Points Earned':48} {loyalty_points:10}")
 
         print("-" * 65)
         print(f"{'Final Payable Amount':48} {final_payable:10.2f}")
@@ -161,4 +167,4 @@ if __name__ == "__main__":
 
     membership = input("Membership (y/n): ").lower() == 'y'
     payment_method = input("Payment Method (cash/card): ").strip().lower()
-    Item.invoice(items, membership, payment_method)    
+    Item.invoice(items, membership, payment_method)
