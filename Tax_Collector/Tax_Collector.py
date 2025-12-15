@@ -20,6 +20,9 @@ class Employee:
         # calculating the gross monthly and annual salry
         self.gross_monthly_salary = self.basic_salary + self.special_allowance
         self.annual_gross_salary = self.gross_monthly_salary * 12 * (100 + bonus_percentage) / 100
+        self.Taxable_Income()
+        self.calculate_tax()
+        self.net_salary()
     
     def Report(self):
         print("\nReport:")
@@ -27,6 +30,9 @@ class Employee:
         print("EmpID:", self.EmpID)
         print(f"Gross Monthly Salary: ₹{self.gross_monthly_salary}")
         print(f"Annual gross salary: ₹{self.annual_gross_salary}")
+        print(f"Taxable Income: ₹{self.Taxable_Income}")
+        print(f"Total tax: ₹{self.total_tax}")
+        print(f"Annual net salary: ₹{self.net_salary}")
 
     def Taxable_Income(self):
         print("\nTaxable Income Report:")
@@ -98,5 +104,3 @@ if __name__ == "__main__":
 
     for i in range(n):
         employee[i].Report()
-        employee[i].Taxable_Income()
-        employee[i].calculate_tax()
