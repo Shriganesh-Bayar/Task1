@@ -31,10 +31,8 @@ if __name__ == "__main__":
     arr = Enter_array(n)
     key = Enter_Input("Enter the key element to find: ")
     found = -1
-    for i in range(len(arr)):
-        if arr[i] == key:
-            found = i
-            break
+    if key in arr:
+        found = arr.index(key)
     if found == -1:
         print(f"The element {key} is not present in the array")
     else:

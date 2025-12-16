@@ -8,7 +8,7 @@ def get_patient_details():
     name = input("Name: ")
     age = int(input("Age: "))
     gender = input("Gender: ")
-    contact = input("Contact: ")
+    contact = input("Contact : ")
     return name, age, gender, contact
 
 def get_service_selection(services):
